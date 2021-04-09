@@ -5,7 +5,7 @@ class Deque_int
 {
 private:
 
-	List<int> list;
+	List<int>* list;
 	int size;
 
 public:
@@ -23,9 +23,9 @@ public:
 
 	void PushBack(const int& element);
 
-	void PopFront();
+	int PopFront();
 
-	void PopBack();
+	int PopBack();
 
 	int PeekFront() const;
 
@@ -43,7 +43,6 @@ Deque_int::Deque_int(Deque_int&& other)
 	size = other.size;
 	list = other.list;
 	other.size = NULL;
-	other.list.size = NULL;
 	other.list = nullptr;
 }
 
@@ -60,6 +59,5 @@ Deque_int& Deque_int::operator=(Deque_int&& other)
 	size = other.size;
 	list = other.list;
 	other.size = NULL;
-	other.list.size = NULL;
 	other.list = nullptr;
 }

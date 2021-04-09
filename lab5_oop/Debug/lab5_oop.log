@@ -1,5 +1,8 @@
-﻿  Source.cpp
-C:\Users\zifof\source\repos\oop_lab\lab5_oop\lab5_oop\Deque.h(139,23): warning C4018: <: несоответствие типов со знаком и без знака
-C:\Users\zifof\source\repos\oop_lab\lab5_oop\lab5_oop\Source.cpp(20): message : выполняется компиляция ссылки на экземпляр шаблон функции "std::ostream &operator <<<int>(std::ostream &,const Deque<int> &)"
-C:\Users\zifof\source\repos\oop_lab\lab5_oop\lab5_oop\List.h(235): warning C4715: List<int>::operator=: значение возвращается не при всех путях выполнения
+﻿  Deque_int.cpp
+C:\Users\zifof\source\repos\oop_lab\lab5_oop\lab5_oop\Deque_int.cpp(74,23): warning C4018: <: несоответствие типов со знаком и без знака
+  Source.cpp
+C:\Users\zifof\source\repos\oop_lab\lab5_oop\lab5_oop\Deque.h(150,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\zifof\source\repos\oop_lab\lab5_oop\lab5_oop\Source.cpp(18): message : выполняется компиляция ссылки на экземпляр шаблон функции "std::ostream &operator <<<int>(std::ostream &,const Deque<int> &)"
+  Создание кода...
+C:\Users\zifof\source\repos\oop_lab\lab5_oop\lab5_oop\Deque_int.cpp(70): warning C4715: Deque_int::operator=: значение возвращается не при всех путях выполнения
   lab5_oop.vcxproj -> C:\Users\zifof\source\repos\oop_lab\lab5_oop\Debug\lab5_oop.exe

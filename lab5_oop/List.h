@@ -2,7 +2,7 @@
 #include <iostream>
 
 template<typename T>
-class List // класс односв€зный список
+class List // класс односв€зный циклический список
 {
 private:
 
@@ -23,8 +23,6 @@ public:
 
 	List(); // конструктор
 
-	List(const List& other); // конструктор копировани€
-
 	~List(); // деструктор
 
 	void push_front(T data); // добавл€ет элемент в начало
@@ -33,11 +31,11 @@ public:
 
 	void push_back(T data); //добавл€ем элемент в конец
 
-	void pop_front(); // удал€ет самый первый элемент
+	T pop_front(); // удал€ет самый первый элемент
 
-	void removeAT(int index); // удал€ет элемент в указываемом месте
+	T removeAT(int index); // удал€ет элемент в указываемом месте
 
-	void pop_back(); // удал€ет последний элемент
+	T pop_back(); // удал€ет последний элемент
 
 	void clear(); // удал€ет все элементы
 
@@ -45,7 +43,6 @@ public:
 
 	T sel_el(const int index) const; // возвращает элемент по индексу
 
-	List& operator=(const List& other); // перегрузка оператора присвоени€
 };
 
 template<typename T>
@@ -61,16 +58,6 @@ List<T>::List()
 	size = 0;
 	head = nullptr;
 	tail = nullptr;
-}
-
-template<typename T>
-List<T>::List(const List& other)
-{
-	this->size = other.size;
-	for (int i = 0; i < other.size; i++)
-	{
-		this->push_back(other.sel_el(i));
-	}
 }
 
 template<typename T>
@@ -134,30 +121,35 @@ void List<T>::push_back(T data)
 }
 
 template<typename T>
-void List<T>::pop_front()
+T List<T>::pop_front()
 {
 	Node* temp = head;
+
+	T data = temp->data;
+
 	head = head->pNext;
+
 	delete temp;
 	size--;
 
+	return data;
 }
 
 template<typename T>
-void List<T>::removeAT(int index)
+T List<T>::removeAT(int index)
 {
 	if (index > this->size - 1) // ≈сли указанный индекс находитс€ вне границ списка
 	{
-		std::cout << "”казанный индекс находитс€ вне границ" << std::endl;
-		return;
+		std::cout << "”казанный индекс находитс€ вне границ!" << std::endl;
+		return T();
 	}
 	else if (index == 0) // если индекс 0, то пользуемс€ уже готовым методом
 	{
-		pop_front();
+		return pop_front();
 	}
 	else
 	{
-		Node* previous = this->head;  // вызываем все имеющиес€ хранилища в объект всех хранилищей 
+		Node* previous = this->head;  // вызываем все имеющиес€ хранилища в объект всех хранилищей (this избыточен)
 
 		for (int i = 0; i < index - 1; i++) //ищем хранилише, которое стоит до того хранилища, которое мы хотим удалить
 		{
@@ -170,14 +162,17 @@ void List<T>::removeAT(int index)
 			tail = previous;
 
 		previous->pNext = toDelete->pNext; // на место хранилища, которое хотим удалить ставим следующее соседнее
+		T data = toDelete->data;
 		delete toDelete; // удал€ем хранилище, на которое указали
 		size--;
+
+		return data;
 	}
 }
 
 template<typename T>
-void List<T>::pop_back() {
-	removeAT(size - 1);
+T List<T>::pop_back() {
+	return removeAT(size - 1);
 }
 
 template<typename T>
@@ -215,21 +210,5 @@ T List<T>::sel_el(const int index) const
 		}
 
 		return current->data;
-	}
-}
-
-template<typename T>
-List<T>& List<T>::operator=(const List<T>& other)
-{
-	if (this == &other)
-	{
-		return *this;
-	}
-
-	this->clear();
-
-	for (int i = 0; i < other.getsize(); i++)
-	{
-		this->push_back(other.sel_el(i));
 	}
 }
