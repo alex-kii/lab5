@@ -27,13 +27,13 @@ public:
 
 	void push_front(T data); // добавляет элемент в начало
 
-	void insert(T data, int index); // добавляет элемент в указываемое место
+	void insert(T data, const int index); // добавляет элемент в указываемое место
 
 	void push_back(T data); //добавляем элемент в конец
 
 	T pop_front(); // удаляет самый первый элемент
 
-	T removeAT(int index); // удаляет элемент в указываемом месте
+	T removeAT(const int index); // удаляет элемент в указываемом месте
 
 	T pop_back(); // удаляет последний элемент
 
@@ -68,7 +68,9 @@ void List<T>::push_front(T data)
 {
 	if (head == nullptr) // если ещё нет ни одного хранилища
 	{
-		head = tail = new Node(data); // создаём первое хранилище
+		Node* p = new Node(data);// создаём первое хранилище
+		head = p;
+		tail = p;
 	}
 	else
 	{
@@ -78,7 +80,7 @@ void List<T>::push_front(T data)
 }
 
 template<typename T>
-void List<T>::insert(T data, int index)
+void List<T>::insert(T data, const int index)
 {
 	if (index > this->size - 1) // Если указанный индекс находится вне границ списка
 	{
@@ -136,7 +138,7 @@ T List<T>::pop_front()
 }
 
 template<typename T>
-T List<T>::removeAT(int index)
+T List<T>::removeAT(const int index)
 {
 	if (index > this->size - 1) // Если указанный индекс находится вне границ списка
 	{
