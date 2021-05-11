@@ -5,15 +5,15 @@ class Deque_int
 {
 private:
 
-	List<int>* list;
-	int size;
+	List<int> list;
 
 public:
 	Deque_int();
 
 	Deque_int(const Deque_int& other);
 
-	template<typename T> Deque_int(Deque_int&& other);
+	template<typename T>
+	Deque_int(Deque_int&& other);
 
 	~Deque_int();
 
@@ -40,10 +40,7 @@ public:
 template<typename T>
 Deque_int::Deque_int(Deque_int&& other)
 {
-	size = other.size;
-	list = other.list;
-	other.size = NULL;
-	other.list = nullptr;
+	list = std::move(other.list);
 }
 
 template<typename T>
@@ -56,8 +53,5 @@ Deque_int& Deque_int::operator=(Deque_int&& other)
 
 	list.clear();
 
-	size = other.size;
-	list = other.list;
-	other.size = NULL;
-	other.list = nullptr;
+	list = std::move(other.list);
 }

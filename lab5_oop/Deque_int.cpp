@@ -1,56 +1,41 @@
 #include "Deque_int.h"
 
-Deque_int::Deque_int()
-{
-	list = new List<int>();
-	size = 0;
-}
+Deque_int::Deque_int() { }
 
 Deque_int::Deque_int(const Deque_int& other)
 {
-	list = new List<int>();
-	size = other.size;
-
-	for (int i = 0; i < other.size; i++)
-	{
-		this->list->push_back(other.list->sel_el(i));
-	}
+	list = other.list;
 }
 
-Deque_int::~Deque_int() {
-	delete list;
-	size = 0;
-}
+Deque_int::~Deque_int() { }
 
-int Deque_int::GetSize() const { return size; }
+int Deque_int::GetSize() const { return list.getsize(); }
 
 void Deque_int::PushFront(const int& element)
 {
-	list->push_front(element);
-	++size;
+	list.push_front(element);
+
 }
 
 void Deque_int::PushBack(const int& element)
 {
-	list->push_back(element);
-	++size;
+	list.push_back(element);
+
 }
 
 int Deque_int::PopFront()
 {
-	--size;
-	return list->pop_front();
+	return list.pop_front();
 }
 
 int Deque_int::PopBack()
 {
-	--size;
-	return list->pop_back();
+	return list.pop_back();
 }
 
-int Deque_int::PeekFront() const { return list->sel_el(0); }
+int Deque_int::PeekFront() const { return list.sel_el(0); }
 
-int Deque_int::PeekBack() const { return list->sel_el(size - 1); }
+int Deque_int::PeekBack() const { return list.sel_el(list.getsize() - 1); }
 
 Deque_int& Deque_int::operator=(const Deque_int& other)
 {
@@ -59,21 +44,16 @@ Deque_int& Deque_int::operator=(const Deque_int& other)
 		return *this;
 	}
 
-	list->clear();
+	list.clear();
 
-	size = other.size;
-
-	for (int i = 0; i < other.size; i++)
-	{
-		this->list->push_back(other.list->sel_el(i));
-	}
+	list = other.list;
 }
 
 std::ostream& operator<<(std::ostream& os, const Deque_int& obj)
 {
-	for (size_t i = 0; i < obj.size; i++)
+	for (size_t i = 0; i < obj.list.getsize(); i++)
 	{
-		os << obj.list->sel_el(i) << " ";
+		os << obj.list.sel_el(i) << " ";
 	}
 
 	os << std::endl;

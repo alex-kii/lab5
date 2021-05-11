@@ -2,7 +2,7 @@
 #include <iostream>
 
 template<typename T>
-class List // класс односвязный циклический список
+class List // класс односвязный список
 {
 private:
 
@@ -23,13 +23,15 @@ public:
 
 	List(); // конструктор
 
+	List(const List& other);
+
+	List(const List&& other);
+
 	~List(); // деструктор
 
-	void push_front(T data); // добавляет элемент в начало
+	void push_front(const T& data); // добавляет элемент в начало
 
-	void insert(T data, const int index); // добавляет элемент в указываемое место
-
-	void push_back(T data); //добавляем элемент в конец
+	void push_back(const T& data); //добавляем элемент в конец
 
 	T pop_front(); // удаляет самый первый элемент
 
@@ -41,30 +43,40 @@ public:
 
 	int getsize() const; // получаем кол-во эл
 
-	T sel_el(const int index) const; // возвращает элемент по индексу
+	T& sel_el(const int index) const; // возвращает элемент по индексу
 
+	List& operator=(const List& other);
+	List& operator=(List&& other);
 };
 
 template<typename T>
-List<T>::Node::Node(T data, Node* pNext)
+List<T>::Node::Node(T data, Node* pNext) : data(data), pNext(pNext) { }
+
+template<typename T>
+List<T>::List() : size(0), head(nullptr), tail(nullptr) { }
+
+template<typename T>
+List<T>::List(const List& other)
 {
-	this->data = data;
-	this->pNext = pNext;
+	for (int i = 0; i < other.size; i++)
+	{
+		this->push_back(other.sel_el(i));
+	}
 }
 
 template<typename T>
-List<T>::List()
+List<T>::List(const List&& other) : size(other.size), head(other.head), tail(other.tail)
 {
-	size = 0;
-	head = nullptr;
-	tail = nullptr;
+	other.size = NULL;
+	other.head = nullptr;
+	other.tail = nullptr;
 }
 
 template<typename T>
 List<T>::~List() { clear(); }
 
 template<typename T>
-void List<T>::push_front(T data)
+void List<T>::push_front(const T& data)
 {
 	if (head == nullptr) // если ещё нет ни одного хранилища
 	{
@@ -80,34 +92,7 @@ void List<T>::push_front(T data)
 }
 
 template<typename T>
-void List<T>::insert(T data, const int index)
-{
-	if (index > this->size - 1) // Если указанный индекс находится вне границ списка
-	{
-		std::cout << "Указанный индекс находится вне границ!" << std::endl;
-		return T();
-	}
-	else if (index == 0)
-	{
-		push_front(data);
-	}
-	else
-	{
-		Node* previous = this->head;
-
-		for (int i = 0; i < index - 1; i++)
-		{
-			previous = previous->pNext;
-		}
-
-		Node* newNode = new Node(data, previous->pNext);
-		previous->pNext = newNode;
-		size++;
-	}
-}
-
-template<typename T>
-void List<T>::push_back(T data)
+void List<T>::push_back(const T& data)
 {
 	if (head == nullptr) // если ещё нет ни одного хранилища
 	{
@@ -129,7 +114,10 @@ T List<T>::pop_front()
 
 	T data = temp->data;
 
-	head = head->pNext;
+	if (size > 1)
+		head = head->pNext;
+	else
+		tail = head = nullptr;
 
 	delete temp;
 	size--;
@@ -190,12 +178,12 @@ template<typename T>
 int List<T>::getsize() const { return size; }
 
 template<typename T>
-T List<T>::sel_el(const int index) const
+T& List<T>::sel_el(const int index) const
 {
 	if (index > this->size - 1) // Если указанный индекс находится вне границ списка
 	{
-		std::cout << "Указанный индекс находится вне границ!" << std::endl;
-		return T();
+		std::cout << "Указанный индекс находится вне границ! Аварийное заверешение программы!" << std::endl;
+		abort();
 	}
 
 	if (index == 0)
@@ -213,4 +201,43 @@ T List<T>::sel_el(const int index) const
 
 		return current->data;
 	}
+}
+
+template<typename T>
+List<T>& List<T>::operator=(const List& other)
+{
+	size = 0;
+	head = nullptr;
+	tail = nullptr;
+
+	if (this == &other)
+	{
+		return *this;
+	}
+
+	clear();
+
+	for (int i = 0; i < other.size; i++)
+	{
+		this->push_back(other.sel_el(i));
+	}
+}
+
+template<typename T>
+List<T>& List<T>::operator=(List&& other)
+{
+	if (this == &other)
+	{
+		return *this;
+	}
+
+	clear();
+
+	size = other.size;
+	this->head = other.head;
+	this->tail = other.tail;
+
+	other.size = NULL;
+	other.head = nullptr;
+	other.tail = nullptr;
 }

@@ -6,8 +6,7 @@ class Deque
 {
 private:
 
-	List<T>* list;
-	int size;
+	List<T> list;
 
 public:
 	Deque();
@@ -41,74 +40,55 @@ public:
 
 template<typename T>
 Deque<T>::Deque()
-{
-	list = new List<T>();
-	size = 0;
-}
+{ }
 
 template<typename T>
 Deque<T>::Deque(const Deque& other)
 {
-	list = new List<T>();
-	size = other.size;
-
-	for (int i = 0; i < other.size; i++)
-	{
-		this->list->push_back(other.list->sel_el(i));
-	}
+	list = other.list;
 }
 
 template<typename T>
 Deque<T>::Deque(Deque&& other)
 {
-	size = other.size;
-	list = other.list;
-	other.size = NULL;
-	other.list = nullptr;
+	list = std::move(other.list);
 }
 
 template<typename T>
-Deque<T>::~Deque() {
-	delete list;
-	size = 0;
-}
+Deque<T>::~Deque() { }
 
 template<typename T>
-int Deque<T>::GetSize() const { return size; }
+int Deque<T>::GetSize() const { return list.getsize(); }
 
 template<typename T>
 void Deque<T>::PushFront(const T& element)
 {
-	list->push_front(element);
-	++size;
+	list.push_front(element);
 }
 
 template<typename T>
 void Deque<T>::PushBack(const T& element)
 {
-	list->push_back(element);
-	++size;
+	list.push_back(element);
 }
 
 template<typename T>
 T Deque<T>::PopFront()
 {
-	--size;
-	return list->pop_front();
+	return list.pop_front();
 }
 
 template<typename T>
 T Deque<T>::PopBack()
 {
-	--size;
-	return list->pop_back();
+	return list.pop_back();
 }
 
 template<typename T>
-T Deque<T>::PeekFront() const { return list->sel_el(0); }
+T Deque<T>::PeekFront() const { return list.sel_el(0); }
 
 template<typename T>
-T Deque<T>::PeekBack() const { return list->sel_el(size - 1); }
+T Deque<T>::PeekBack() const { return list.sel_el(list.getsize() - 1); }
 
 template<typename T>
 Deque<T>& Deque<T>::operator=(const Deque<T>& other)
@@ -118,14 +98,9 @@ Deque<T>& Deque<T>::operator=(const Deque<T>& other)
 		return *this;
 	}
 
-	list->clear();
+	list.clear();
 
-	size = other.size;
-
-	for (int i = 0; i < other.size; i++)
-	{
-		this->list->push_back(other.list->sel_el(i));
-	}
+	list = other.list;
 }
 
 template<typename T>
@@ -138,18 +113,15 @@ Deque<T>& Deque<T>::operator=(Deque<T>&& other)
 
 	list.clear();
 
-	size = other.size;
-	list = other.list;
-	other.size = NULL;
-	other.list = nullptr;
+	list = std::move(other.list);
 }
 
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const Deque<T>& obj)
 {
-	for (size_t i = 0; i < obj.size; i++)
+	for (size_t i = 0; i < obj.list.getsize(); i++)
 	{
-		os << obj.list->sel_el(i) << " ";
+		os << obj.list.sel_el(i) << " ";
 	}
 
 	os << std::endl;
